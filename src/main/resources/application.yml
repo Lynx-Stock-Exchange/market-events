@@ -1,0 +1,22 @@
+server:
+  port: 8081 # Portul pe care va rula microserviciul nostru
+
+spring:
+  application:
+    name: market-events
+
+  # Configurare Baza de Date In-Memory (H2)
+  datasource:
+    url: jdbc:h2:mem:market_events_db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true # Asta iti permite sa vezi baza de date in browser la /h2-console
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update # Spring va crea tabelele automat cand scrieti entitatile Java
+    show-sql: true # Vei vedea in consola comenzile SQL care se executa in spate
