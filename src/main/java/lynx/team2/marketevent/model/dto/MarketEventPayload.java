@@ -3,6 +3,8 @@ package lynx.team2.marketevent.model.dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lynx.team2.marketevent.model.enums.EventScope;
+import lynx.team2.marketevent.model.enums.EventType;
 
 @Data
 @Builder
@@ -11,16 +13,14 @@ public class MarketEventPayload {
     @JsonProperty("event_id")
     private String eventId;
 
-    // TODO: De schimbat in EventType dupa ce Luiza termina Fundatia
     @JsonProperty("event_type")
-    private String eventType;
+    private EventType eventType;
 
     @JsonProperty("headline")
     private String headline;
 
-    // TODO: De schimbat in EventScope dupa ce Luiza termina Fundatia
     @JsonProperty("scope")
-    private String scope;
+    private EventScope scope;
 
     @JsonProperty("target")
     private String target;

@@ -2,12 +2,15 @@ package lynx.team2.marketevent.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import lynx.team2.marketevent.messaging.KafkaEventPublisher;
 import lynx.team2.marketevent.model.dto.EventTriggerRequest;
 import lynx.team2.marketevent.model.dto.MarketEventPayload;
 import lynx.team2.marketevent.model.dto.WebSocketEnvelope;
+import lynx.team2.marketevent.model.enums.EventScope;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 @Slf4j
@@ -16,47 +19,46 @@ import java.util.UUID;
 public class MarketEventServiceImpl implements MarketEventService {
 
     private final HeadlineSelector headlineSelector;
+    private final KafkaEventPublisher kafkaPublisher;
 
     @Override
     public void triggerEvent(EventTriggerRequest request) {
-        log.info("Processing event trigger request for type: {}", request.getEventType());
+        log.info("Processing event trigger request for type: {}", request.getEvent_type());
 
-        // 1. Validation Logic (Your Role B)
-        // Rule: Only one MARKET event at a time [cite: 366]
-        if ("MARKET".equals(request.getScope())) {
+
+        if (EventScope.MARKET.equals(request.getScope())) {
             validateNoActiveMarketEvent();
         }
 
-        // 2. Generate the Headline (Your Role B)
-        String generatedHeadline = headlineSelector.getRandomHeadline(request.getEventType());
 
-        // 3. Assemble the Output DTO (The "Letter" for Kafka)
-        // Here we map the Request to the Payload required by the Spec [cite: 133-134]
+        String generatedHeadline = headlineSelector.getRandomHeadline(request.getEvent_type().name());
+
+
         MarketEventPayload kafkaPayload = MarketEventPayload.builder()
                 .eventId("evt-" + UUID.randomUUID())
-                .eventType(request.getEventType())
+                .eventType(request.getEvent_type())
                 .scope(request.getScope())
                 .target(request.getTarget())
                 .magnitude(request.getMagnitude())
-                .durationTicks(request.getDurationTicks())
+                .durationTicks(request.getDuration_ticks())
                 .headline(generatedHeadline)
-                .marketTime(LocalDateTime.now().toString()) // Should match simulated time eventually
+                .marketTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .build();
 
-        // 4. Wrap in Envelope and Send [cite: 197-199]
         WebSocketEnvelope<MarketEventPayload> envelope = new WebSocketEnvelope<>(
                 "MARKET_EVENT",
                 kafkaPayload
         );
 
-        sendToKafka(envelope);
+        kafkaPublisher.publishEvent(envelope);
     }
 
     private void validateNoActiveMarketEvent() {
-        // Logica de validare va veni aici [cite: 366-367]
+        // TODO: Query the database to check for active MARKET events once the Repository is ready
+        // if (marketEventRepository.existsByScopeAndStatus(EventScope.MARKET, "ACTIVE")) {
+        //     log.warn("ERROR: A MARKET event is already active!");
+        //     throw new RuntimeException("Cannot trigger two MARKET events simultaneously.");
+        // }
     }
 
-    private void sendToKafka(WebSocketEnvelope<MarketEventPayload> envelope) {
-        log.info("Sending message to Kafka topic market.events.active: {}", envelope);
-    }
 }

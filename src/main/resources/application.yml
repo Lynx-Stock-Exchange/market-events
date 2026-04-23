@@ -20,3 +20,20 @@ spring:
     hibernate:
       ddl-auto: update # Spring va crea tabelele automat cand scrieti entitatile Java
     show-sql: true # Vei vedea in consola comenzile SQL care se executa in spate
+
+
+market:
+  simulation:
+    available-sectors:
+      - TECH
+      - HEALTH
+      - ENERGY
+      - FINANCE
+      - AUTO
+    available-stocks:
+      - AAPL
+      - MSFT
+      - TSLA
+      - GOOGL
+      - AMZN
+      - ARKA
