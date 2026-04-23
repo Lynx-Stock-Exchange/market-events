@@ -1,0 +1,39 @@
+{
+  "event_headlines": {
+    "BEAR_CRASH": [
+      "Global recession fears grip markets",
+      "Central bank rate hike sends stocks tumbling",
+      "Major hedge funds liquidate positions and panic",
+      "Unexpected geopolitical tensions trigger sell-off",
+      "Investors flee to safe-haven assets as market collapse"
+    ],
+    "BULL_RUN": [
+      "Markets surge as investor confidence returns",
+      "Strong earnings season fuels bullshit momentum",
+      "Global economy shows signs or rapid recovery",
+      "Tech sector leads massive market rally",
+      "Institutional investors pour capital into equities"
+    ],
+    "SECTOR_BOOM": [
+      "Tech giants report record earnings",
+      "Energy sector surges amid rising oil prices",
+      "Healthcare stocks rally after breakthrough discovery",
+      "AI companies dominate market gains",
+      "Green energy sector attracts massive investments"
+    ],
+    "SECTOR_SLUMP": [
+      "Regulatory concerns shake the Tech sector",
+      "Banking sector declines amid financial instability fears",
+      "Energy stocks fall due to oversupply concerns",
+      "Pharma companies drop after failed clinical trials",
+      "Retail sector struggles with declining consumer demand"
+    ],
+    "STOCK_SHOCK": [
+      "Unexpected CEO resignation shocks investors",
+      "Company reports massive losses in quarterly earnings",
+      "Fraud investigation causes sudden stock plunge",
+      "Breakthrough product launch sends stock soaring",
+      "Major acquisition news creates extreme volatility"
+    ]
+  }
+}
