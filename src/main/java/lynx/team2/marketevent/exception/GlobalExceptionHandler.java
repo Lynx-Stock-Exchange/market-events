@@ -39,4 +39,14 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
+
+    @ExceptionHandler(EventConflictException.class)
+    public ResponseEntity<ErrorResponse> handleConflict(EventConflictException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "EVENT_CONFLICT",
+                ex.getMessage(),
+                Map.of()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
+    }
 }

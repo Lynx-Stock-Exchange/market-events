@@ -24,16 +24,12 @@ spring:
 
 market:
   simulation:
-    available-sectors:
-      - TECH
-      - HEALTH
-      - ENERGY
-      - FINANCE
-      - AUTO
-    available-stocks:
-      - AAPL
-      - MSFT
-      - TSLA
-      - GOOGL
-      - AMZN
-      - ARKA
+    auto-scheduler-rate: 60000
+    expiration-scheduler-rate: 30000
+    event-probability-percent: 10
+    magnitude-min: 1.0
+    magnitude-max: 3.0
+    duration-min-ticks: 10
+    duration-max-ticks: 40
+    available-sectors: TECH,HEALTH,ENERGY,FINANCE,AUTO
+    available-stocks: AAPL,MSFT,TSLA,GOOGL,AMZN,ARKA

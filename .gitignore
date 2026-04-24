@@ -65,3 +65,7 @@ buildNumber.properties
 *.log
 log/
 logs
+
+
+# Docker (dacă ai date persistente)
+.docker-data/

@@ -7,7 +7,9 @@ import lynx.team2.marketevent.messaging.KafkaEventPublisher;
 import lynx.team2.marketevent.model.dto.EventTriggerRequest;
 import lynx.team2.marketevent.model.dto.MarketEventPayload;
 import lynx.team2.marketevent.model.dto.WebSocketEnvelope;
+import lynx.team2.marketevent.model.entity.MarketEvent;
 import lynx.team2.marketevent.model.enums.EventScope;
+import lynx.team2.marketevent.model.enums.EventStatus;
 import lynx.team2.marketevent.repository.MarketEventRepository;
 import org.springframework.stereotype.Service;
 
@@ -36,14 +38,26 @@ public class MarketEventServiceImpl implements MarketEventService {
 
         String headline = headlineSelector.getRandomHeadline(request.getEvent_type().name());
 
+        MarketEvent newEvent = new MarketEvent();
+        newEvent.setEventType(request.getEvent_type());
+        newEvent.setScope(request.getScope());
+        newEvent.setTarget(request.getTarget());
+        newEvent.setMagnitude(request.getMagnitude());
+        newEvent.setDuration_ticks(request.getDuration_ticks());
+        newEvent.setHeadline(headline);
+
+        newEvent.setTriggered_by(lynx.team2.marketevent.model.enums.TriggeredBy.ADMIN);
+
+        marketEventRepository.save(newEvent);
+
         MarketEventPayload payload = MarketEventPayload.builder()
-                .eventId("evt-" + UUID.randomUUID())
-                .eventType(request.getEvent_type())
-                .scope(request.getScope())
-                .target(request.getTarget())
-                .magnitude(request.getMagnitude())
-                .durationTicks(request.getDuration_ticks())
-                .headline(headline)
+                .eventId(newEvent.getEventId())
+                .eventType(newEvent.getEventType())
+                .scope(newEvent.getScope())
+                .target(newEvent.getTarget())
+                .magnitude(newEvent.getMagnitude())
+                .durationTicks(newEvent.getDuration_ticks())
+                .headline(newEvent.getHeadline())
                 .marketTime(LocalDateTime.now().format(DateTimeFormatter.ISO_LOCAL_DATE_TIME))
                 .build();
 
@@ -57,7 +71,7 @@ public class MarketEventServiceImpl implements MarketEventService {
 
     private void validateNoActiveMarketEvent() {
 
-        boolean isMarketActive = marketEventRepository.existsByScope(EventScope.MARKET);
+        boolean isMarketActive = marketEventRepository.existsByScopeAndStatus(EventScope.MARKET, EventStatus.ACTIVE);
         if (isMarketActive) {
             throw new EventConflictException("A global MARKET event is already active. Cannot trigger another one.");
         }

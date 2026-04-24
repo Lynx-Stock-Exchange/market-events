@@ -20,17 +20,32 @@ public class EventAutoScheduler {
     private final MarketEventService marketEventService;
     private final Random random = new Random();
 
+    @Value("${market.simulation.event-probability-percent}")
+    private int probabilityPercent;
+
+    @Value("${market.simulation.magnitude-min}")
+    private double magnitudeMin;
+
+    @Value("${market.simulation.magnitude-max}")
+    private double magnitudeMax;
+
+    @Value("${market.simulation.duration-min-ticks}")
+    private int durationMin;
+
+    @Value("${market.simulation.duration-max-ticks}")
+    private int durationMax;
+
     @Value("${market.simulation.available-sectors}")
     private List<String> availableSectors;
 
     @Value("${market.simulation.available-stocks}")
     private List<String> availableStocks;
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(fixedRateString = "${market.simulation.auto-scheduler-rate}")
     public void rollTheDiceForRandomEvent() {
         int diceRoll = random.nextInt(100);
 
-        if (diceRoll < 10) {
+        if (diceRoll < probabilityPercent) {
             log.info("The dice rolled in our favor! Generating an automatic market event...");
             EventTriggerRequest randomRequest = generateRandomRequest();
 
@@ -47,10 +62,8 @@ public class EventAutoScheduler {
         EventTriggerRequest request = new EventTriggerRequest();
 
         EventScope randomScope = EventScope.values()[random.nextInt(EventScope.values().length)];
-        EventType randomType = EventType.values()[random.nextInt(EventType.values().length)];
-
+        request.setEvent_type(EventType.values()[random.nextInt(EventType.values().length)]);
         request.setScope(randomScope);
-        request.setEvent_type(randomType);
 
         String target = switch (randomScope) {
             case MARKET -> null;
@@ -59,9 +72,10 @@ public class EventAutoScheduler {
         };
         request.setTarget(target);
 
-        double rawMagnitude = 1.0 + (random.nextDouble() * 2);
+        double rawMagnitude = magnitudeMin + (random.nextDouble() * (magnitudeMax - magnitudeMin));
         request.setMagnitude(Math.round(rawMagnitude * 10.0) / 10.0);
-        request.setDuration_ticks(10 + random.nextInt(31));
+
+        request.setDuration_ticks(durationMin + random.nextInt((durationMax - durationMin) + 1));
 
         return request;
     }

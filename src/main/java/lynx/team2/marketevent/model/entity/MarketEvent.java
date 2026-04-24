@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lynx.team2.marketevent.model.enums.EventScope;
+import lynx.team2.marketevent.model.enums.EventStatus;
 import lynx.team2.marketevent.model.enums.EventType;
 import lynx.team2.marketevent.model.enums.TriggeredBy;
 
@@ -60,6 +61,11 @@ public class MarketEvent {
     @NotNull
     private TriggeredBy triggered_by;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status", nullable = false, length = 16)
+    @NotNull
+    private EventStatus status;
+
     public MarketEvent() {}
 
     public MarketEvent(EventType event_type,EventScope scope,String target, Double magnitude, Integer duration_ticks, String headline, LocalDateTime triggered_at, TriggeredBy triggered_by) {
@@ -80,6 +86,9 @@ public class MarketEvent {
         }
         if (this.triggered_at == null) {
             this.triggered_at = LocalDateTime.now();
+        }
+        if (this.status == null) {
+            this.status = EventStatus.ACTIVE;
         }
     }
     public String getEventId() {
@@ -158,6 +167,13 @@ public class MarketEvent {
         return this.scope == EventScope.MARKET;
     }
 
+    public EventStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(EventStatus status) {
+        this.status = status;
+    }
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

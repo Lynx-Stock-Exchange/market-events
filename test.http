@@ -1,0 +1,10 @@
+### Test declansare criza financiara
+POST http://localhost:8081/api/v1/admin/events/trigger
+Content-Type: application/json
+
+{
+  "event_type": "BEAR_CRASH",
+  "scope": "MARKET",
+  "magnitude": 2.5,
+  "duration_ticks": 2
+}
