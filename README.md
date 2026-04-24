@@ -1,43 +1,43 @@
 # Lynx Market Event Service 📈
 
-Microserviciu Java performant pentru simularea și gestionarea evenimentelor de piață (Market Events) într-o arhitectură de tip **Event-Driven**. Sistemul permite atât declanșarea manuală a crizelor/oportunităților financiare, cât și generarea lor automată folosind un motor probabilistic.
+A high-performance Java microservice for simulating and managing Market Events in an **Event-Driven Architecture**. The system supports both manual event triggering via administrators and automatic generation through a probabilistic engine.
 
-## ✨ Funcționalități Principale
+## ✨ Core Features
 
-- **Event Injection:** API REST pentru injectarea manuală a evenimentelor de către administratori.
-- **Auto-Simulation:** Motor de tip "Dice Roll" care generează evenimente aleatorii bazate pe probabilități configurabile.
-- **Conflict Prevention:** Mecanism de validare care previne suprapunerea a două evenimente globale (MARKET-wide) simultane.
-- **Automated Lifecycle:** Sistem de expirare automată a evenimentelor după un număr setat de "ticks" (minute).
-- **Kafka Integration:** Publicarea evenimentelor pe topic-ul `market.events.active` pentru consumatori externi (Frontend/Trading Services).
+- **Event Injection:** REST API for manual event injection by administrators.
+- **Auto-Simulation:** A "Dice Roll" engine that generates random events based on configurable probabilities.
+- **Conflict Prevention:** Validation mechanism that prevents overlapping simultaneous MARKET-wide events.
+- **Automated Lifecycle:** Automatic event expiration system based on a set number of "ticks" (minutes).
+- **Kafka Integration:** Publishes events to the `market.events.active` topic for external consumers (Frontend/Trading Services).
 
-## 🛠 Tehnologii Folosite
+## 🛠 Tech Stack
 
 - **Java 21**
 - **Spring Boot 3.x** (JPA, Web, Scheduling)
-- **Apache Kafka** (Mesagerie asincronă)
-- **H2 Database** (Stocare în memorie pentru persistența stării)
-- **Docker & Docker Compose** (Infrastructură locală)
-- **Lombok & SLF4J** (Cod curat și logging)
+- **Apache Kafka** (Asynchronous Messaging)
+- **H2 Database** (In-memory storage for state persistence)
+- **Docker & Docker Compose** (Local Infrastructure)
+- **Lombok & SLF4J** (Clean code and logging)
 
-## 🚀 Pornirea Proiectului
+## 🚀 Getting Started
 
-### 1. Infrastructură
-Asigurați-vă că aveți Docker Desktop pornit, apoi rulați:
+### 1. Infrastructure
+Ensure Docker Desktop is running, then execute:
 ```bash
 docker-compose up -d
 ```
-Această comandă va porni broker-ul Kafka și interfața vizuală **Kafka UI** la adresa `http://localhost:8090`.
+This command starts the Kafka broker and the **Kafka UI** at `http://localhost:8090`.
 
-### 2. Aplicația
-Rulați proiectul din IntelliJ IDEA sau folosind Gradle:
+### 2. Application
+Run the project from IntelliJ IDEA or via Gradle:
 ```bash
 ./gradlew bootRun
 ```
-Aplicația va porni pe portul `8081`.
+The application will start on port `8081`.
 
-## 📖 Ghid de Utilizare API
+## 📖 API Documentation
 
-### Declanșare Eveniment (Manual)
+### Trigger Event (Manual)
 **POST** `/api/v1/admin/events/trigger`
 
 ```json
@@ -50,11 +50,11 @@ Aplicația va porni pe portul `8081`.
 }
 ```
 
-## ⚙️ Configurare (application.yml)
-Toți parametrii simulării sunt centralizați:
-- `event-probability-percent`: Șansa de apariție a unui eveniment automat.
-- `auto-scheduler-rate`: Cât de des se aruncă "zarul".
-- `available-sectors/stocks`: Listele de ținte disponibile pentru simulare.
+## ⚙️ Configuration (application.yml)
+All simulation parameters are centralized:
+- `event-probability-percent`: Probability of an automatic event appearing.
+- `auto-scheduler-rate`: Frequency of the "Dice Roll".
+- `available-sectors/stocks`: Lists of available targets for simulation.
 
 ---
 Developed by **Team Lynx** - 2026
