@@ -8,3 +8,7 @@ Content-Type: application/json
   "magnitude": 2.5,
   "duration_ticks": 2
 }
+
+### Get recent and active market events
+GET http://localhost:8081/api/v1/market/events
+Accept: application/json

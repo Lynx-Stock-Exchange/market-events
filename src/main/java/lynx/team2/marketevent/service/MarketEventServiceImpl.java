@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -75,5 +76,11 @@ public class MarketEventServiceImpl implements MarketEventService {
         if (isMarketActive) {
             throw new EventConflictException("A global MARKET event is already active. Cannot trigger another one.");
         }
+    }
+
+    @Override
+    public List<MarketEvent> getRecentAndActiveEvents() {
+        log.info("Fetching recent and active market events from DB.");
+        return marketEventRepository.getRecentEvents();
     }
 }
