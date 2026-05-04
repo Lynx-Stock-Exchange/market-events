@@ -33,3 +33,4 @@ market:
     duration-max-ticks: 40
     available-sectors: TECH,HEALTH,ENERGY,FINANCE,AUTO
     available-stocks: AAPL,MSFT,TSLA,GOOGL,AMZN,ARKA
+    tick-interval-ms: 1000
