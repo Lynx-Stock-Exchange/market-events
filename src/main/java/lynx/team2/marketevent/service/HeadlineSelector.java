@@ -1,55 +1,37 @@
 package lynx.team2.marketevent.service;
 
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.io.ClassPathResource;
+import lynx.team2.marketevent.model.enums.EventType;
+import lynx.team2.marketevent.simulation.seed.SeedLoader;
 import org.springframework.stereotype.Component;
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 
-import java.io.InputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
+/**
+ * Picks a random headline for a given event type, drawing from the headlines
+ * loaded by {@link SeedLoader} (spec §7.3 / §9 — {@code events.headlines}).
+ */
 @Slf4j
 @Component
 @RequiredArgsConstructor
 public class HeadlineSelector {
 
-    private final ObjectMapper objectMapper;
-    private Map<String, List<String>> headlines = new HashMap<>();
-    private final Random random = new Random();
+    private static final String FALLBACK_HEADLINE = "Unexpected market event detected!";
 
-    @PostConstruct
-    public void loadHeadlinesFromFile() {
-        try {
-            InputStream inputStream = new ClassPathResource("event_headlines.json").getInputStream();
+    private final SeedLoader seedLoader;
 
-            Map<String, Map<String, List<String>>> rootNode = objectMapper.readValue(
-                    inputStream,
-                    new TypeReference<Map<String, Map<String, List<String>>>>() {}
-            );
+    public String getRandomHeadline(EventType eventType) {
+        Map<EventType, List<String>> headlines = seedLoader.events().getHeadlines();
+        List<String> available = headlines == null ? null : headlines.get(eventType);
 
-            headlines = rootNode.get("event_headlines");
-
-            log.info("Successfully loaded market event headlines from JSON!");
-        } catch (Exception e) {
-            log.error("Severe error: Could not load event_headlines.json file", e);
+        if (available == null || available.isEmpty()) {
+            log.warn("No headlines configured for event type {} — using fallback.", eventType);
+            return FALLBACK_HEADLINE;
         }
-    }
-
-    public String getRandomHeadline(String eventType) {
-        List<String> availableHeadlines = headlines.get(eventType);
-
-        if (availableHeadlines == null || availableHeadlines.isEmpty()) {
-            return "Unexpected market event detected!";
-        }
-
-        int randomIndex = random.nextInt(availableHeadlines.size());
-        return availableHeadlines.get(randomIndex);
+        return available.get(ThreadLocalRandom.current().nextInt(available.size()));
     }
 }

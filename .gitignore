@@ -69,3 +69,20 @@ logs
 
 # Docker (dacă ai date persistente)
 .docker-data/
+
+Lynx_MarketEvent_*.docx
+
+# Local-only Spring profiles & env files
+application-local.yml
+application-local.yaml
+application-local.properties
+.env
+.env.*
+!.env.example
+
+# Keys / certificates (defensive)
+*.pem
+*.key
+*.p12
+*.jks
+*.keystore

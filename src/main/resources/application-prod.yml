@@ -1,0 +1,24 @@
+# Production / persistent profile.
+# Activate with: --spring.profiles.active=prod  (or SPRING_PROFILES_ACTIVE=prod)
+#
+# All connection details can be overridden via environment variables.
+# Defaults match the postgres service in docker-compose.yml so the profile
+# is runnable locally with `docker compose up -d`.
+
+spring:
+  datasource:
+    url: ${MARKET_EVENTS_DB_URL:jdbc:postgresql://localhost:5432/market_events}
+    username: ${MARKET_EVENTS_DB_USER:market_events}
+    password: ${MARKET_EVENTS_DB_PASSWORD:market_events}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      # TODO: switch to `validate` once Flyway/Liquibase migrations are introduced.
+      ddl-auto: update
+    show-sql: false
+
+  h2:
+    console:
+      enabled: false

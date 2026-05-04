@@ -49,4 +49,24 @@ public class GlobalExceptionHandler {
         );
         return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
     }
+
+    @ExceptionHandler(InvalidEventException.class)
+    public ResponseEntity<ErrorResponse> handleInvalidEvent(InvalidEventException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "INVALID_EVENT",
+                ex.getMessage(),
+                Map.of()
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(EventPublishException.class)
+    public ResponseEntity<ErrorResponse> handlePublishFailure(EventPublishException ex) {
+        ErrorResponse response = new ErrorResponse(
+                "PUBLISH_FAILED",
+                "Failed to broadcast event to subscribers; please retry.",
+                Map.of()
+        );
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(response);
+    }
 }

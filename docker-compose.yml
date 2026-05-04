@@ -22,3 +22,19 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka:29092
     depends_on:
       - kafka
+
+  # Used by the `prod` Spring profile (application-prod.yml).
+  # Default profile (dev) still uses an in-memory H2 — postgres is opt-in.
+  postgres:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_DB=market_events
+      - POSTGRES_USER=market_events
+      - POSTGRES_PASSWORD=market_events
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
