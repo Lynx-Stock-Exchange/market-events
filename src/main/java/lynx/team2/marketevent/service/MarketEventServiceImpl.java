@@ -10,13 +10,13 @@ import lynx.team2.marketevent.model.dto.WebSocketEnvelope;
 import lynx.team2.marketevent.model.entity.MarketEvent;
 import lynx.team2.marketevent.model.enums.EventScope;
 import lynx.team2.marketevent.model.enums.EventStatus;
+import lynx.team2.marketevent.model.enums.TriggeredBy;
 import lynx.team2.marketevent.repository.MarketEventRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -30,7 +30,7 @@ public class MarketEventServiceImpl implements MarketEventService {
     private final MarketEventRepository marketEventRepository;
 
     @Override
-    public void triggerEvent(EventTriggerRequest request) {
+    public void triggerEvent(EventTriggerRequest request, TriggeredBy triggeredBy) {
         log.info("Processing event: {} for target: {}", request.getEvent_type(), request.getTarget());
 
         if (EventScope.MARKET.equals(request.getScope())) {
@@ -47,7 +47,7 @@ public class MarketEventServiceImpl implements MarketEventService {
         newEvent.setDuration_ticks(request.getDuration_ticks());
         newEvent.setHeadline(headline);
 
-        newEvent.setTriggered_by(lynx.team2.marketevent.model.enums.TriggeredBy.ADMIN);
+        newEvent.setTriggered_by(triggeredBy);
 
         marketEventRepository.save(newEvent);
 
