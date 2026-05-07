@@ -14,8 +14,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Internal endpoint exposed to the REST API gateway (see architecture diagram:
+ * gateway forwards {@code POST /admin/events/trigger} → this service's
+ * {@code POST /market/events/trigger}).
+ * Not intended to be called by end users directly.
+ */
 @RestController
-@RequestMapping("/api/v1/admin/events")
+@RequestMapping("/api/v1/market/events")
 public class InternalEventController {
 
     private final MarketEventService marketEventService;

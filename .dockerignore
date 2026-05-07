@@ -1,0 +1,50 @@
+# Build output (built fresh inside the container)
+.gradle/
+build/
+out/
+target/
+
+# IDE / editor noise
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+*.swp
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# Local override profiles & env files
+application-local.yml
+application-local.yaml
+application-local.properties
+.env
+.env.*
+!.env.example
+
+# Logs / diagnostics
+*.log
+logs/
+hs_err_pid*.log
+replay_pid*.log
+*.hprof
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docs that don't need to be sent to the build context
+README.md
+HELP.md
+Lynx_MarketEvent_*.docx
+
+# Compose / docker (the Dockerfile itself doesn't need to be inside the build context)
+docker-compose.yml
+.docker-data/
+postgres-data/
+
+# Test files
+test.http
