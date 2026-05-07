@@ -36,5 +36,23 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
+  # The Market Events Java service itself. Built from the local Dockerfile.
+  # Brings up the whole stack with `docker compose up -d`.
+  # To run with PostgreSQL instead of H2, set SPRING_PROFILES_ACTIVE=prod below.
+  market-events:
+    build: .
+    ports:
+      - "8082:8082"
+    environment:
+      # Kafka inside the docker network is at kafka:29092 (not localhost:9092).
+      - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092
+      # Postgres connection details — only used if SPRING_PROFILES_ACTIVE=prod.
+      - MARKET_EVENTS_DB_URL=jdbc:postgresql://postgres:5432/market_events
+      - MARKET_EVENTS_DB_USER=market_events
+      - MARKET_EVENTS_DB_PASSWORD=market_events
+    depends_on:
+      - kafka
+      - postgres
+
 volumes:
   postgres_data:

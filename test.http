@@ -1,5 +1,5 @@
 ### Test declansare criza financiara
-POST http://localhost:8081/api/v1/admin/events/trigger
+POST http://localhost:8082/api/v1/market/events/trigger
 Content-Type: application/json
 
 {
@@ -10,5 +10,5 @@ Content-Type: application/json
 }
 
 ### Get recent and active market events
-GET http://localhost:8081/api/v1/market/events
+GET http://localhost:8082/api/v1/market/events
 Accept: application/json
