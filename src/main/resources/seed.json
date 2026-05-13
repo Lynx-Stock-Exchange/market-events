@@ -1,0 +1,62 @@
+{
+  "events": {
+    "auto_trigger_enabled": true,
+    "auto_trigger_probability_per_tick": 0.005,
+    "definitions": [
+      { "event_type": "BULL_RUN",     "scope": "MARKET", "target": null,         "magnitude": 1.5, "duration_ticks": 30, "weight": 0.5 },
+      { "event_type": "BEAR_CRASH",   "scope": "MARKET", "target": null,         "magnitude": 1.8, "duration_ticks": 25, "weight": 0.5 },
+
+      { "event_type": "SECTOR_BOOM",  "scope": "SECTOR", "target": "Tech",       "magnitude": 1.6, "duration_ticks": 20, "weight": 1.0 },
+      { "event_type": "SECTOR_BOOM",  "scope": "SECTOR", "target": "Energy",     "magnitude": 1.5, "duration_ticks": 20, "weight": 1.0 },
+      { "event_type": "SECTOR_BOOM",  "scope": "SECTOR", "target": "Healthcare", "magnitude": 1.5, "duration_ticks": 20, "weight": 1.0 },
+      { "event_type": "SECTOR_BOOM",  "scope": "SECTOR", "target": "Finance",    "magnitude": 1.4, "duration_ticks": 20, "weight": 0.8 },
+
+      { "event_type": "SECTOR_SLUMP", "scope": "SECTOR", "target": "Tech",       "magnitude": 1.8, "duration_ticks": 20, "weight": 1.0 },
+      { "event_type": "SECTOR_SLUMP", "scope": "SECTOR", "target": "Energy",     "magnitude": 1.6, "duration_ticks": 20, "weight": 1.0 },
+      { "event_type": "SECTOR_SLUMP", "scope": "SECTOR", "target": "Healthcare", "magnitude": 1.7, "duration_ticks": 20, "weight": 1.0 },
+      { "event_type": "SECTOR_SLUMP", "scope": "SECTOR", "target": "Finance",    "magnitude": 1.5, "duration_ticks": 20, "weight": 0.8 },
+
+      { "event_type": "STOCK_SHOCK",  "scope": "STOCK",  "target": "ARKA",       "magnitude": 2.5, "duration_ticks": 10, "weight": 2.0 },
+      { "event_type": "STOCK_SHOCK",  "scope": "STOCK",  "target": "AAPL",       "magnitude": 2.2, "duration_ticks": 10, "weight": 2.0 },
+      { "event_type": "STOCK_SHOCK",  "scope": "STOCK",  "target": "MSFT",       "magnitude": 2.0, "duration_ticks": 10, "weight": 2.0 },
+      { "event_type": "STOCK_SHOCK",  "scope": "STOCK",  "target": "TSLA",       "magnitude": 2.8, "duration_ticks": 10, "weight": 2.0 }
+    ],
+    "headlines": {
+      "BEAR_CRASH": [
+        "Global recession fears grip markets",
+        "Central bank rate hike sends stocks tumbling",
+        "Major hedge funds liquidate positions in panic",
+        "Unexpected geopolitical tensions trigger sell-off",
+        "Investors flee to safe-haven assets as markets collapse"
+      ],
+      "BULL_RUN": [
+        "Markets surge as investor confidence returns",
+        "Strong earnings season fuels bullish momentum",
+        "Global economy shows signs of rapid recovery",
+        "Tech sector leads massive market rally",
+        "Institutional investors pour capital into equities"
+      ],
+      "SECTOR_BOOM": [
+        "Tech giants report record earnings",
+        "Energy sector surges amid rising oil prices",
+        "Healthcare stocks rally after breakthrough discovery",
+        "AI companies dominate market gains",
+        "Green energy sector attracts massive investments"
+      ],
+      "SECTOR_SLUMP": [
+        "Regulatory concerns shake the Tech sector",
+        "Banking sector declines amid financial instability fears",
+        "Energy stocks fall due to oversupply concerns",
+        "Pharma companies drop after failed clinical trials",
+        "Retail sector struggles with declining consumer demand"
+      ],
+      "STOCK_SHOCK": [
+        "Unexpected CEO resignation shocks investors",
+        "Company reports massive losses in quarterly earnings",
+        "Fraud investigation causes sudden stock plunge",
+        "Breakthrough product launch sends stock soaring",
+        "Major acquisition news creates extreme volatility"
+      ]
+    }
+  }
+}

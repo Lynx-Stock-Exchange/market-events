@@ -1,0 +1,53 @@
+server:
+  port: 8082
+
+spring:
+  application:
+    name: market-events
+
+  datasource:
+    url: jdbc:h2:mem:market_events_db
+    driverClassName: org.h2.Driver
+    username: sa
+    password: password
+  h2:
+    console:
+      enabled: true   # available at http://localhost:8082/h2-console
+      settings:
+        # Required when running inside Docker — without this H2 rejects requests
+        # arriving via the docker port-forward as "remote connections".
+        # Safe to leave on for dev because the H2 console is dev-only.
+        web-allow-others: true
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+
+  # Kafka client config. Default points at localhost:9092; in docker-compose
+  # SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:29092 overrides this.
+  kafka:
+    bootstrap-servers: ${SPRING_KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: market-events
+      auto-offset-reset: latest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+market:
+  # Kafka topics used by this service. Override per environment if needed.
+  kafka:
+    event-topic: market.events       # we PUBLISH events here
+    tick-topic: market.ticks         # we CONSUME ticks here
+    tick-group: market-events-tick   # consumer group for the tick listener
+
+  simulation:
+
+
+    tick-interval-ms: 1000
+    expiration-scheduler-rate: 30000
+
