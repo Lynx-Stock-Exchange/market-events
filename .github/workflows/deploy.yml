@@ -1,0 +1,44 @@
+name: Deploy Market Events
+
+on:
+  push:
+    branches:
+      - main
+
+concurrency:
+  group: market-events-deploy
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy market-events
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Deploy on server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          password: ${{ secrets.SERVER_PASSWORD }}
+          port: ${{ secrets.SERVER_PORT }}
+          script: |
+            set -e
+
+            cd ~/stock-exchange/market-events
+
+            echo "Pulling latest market-events..."
+            git fetch origin
+            git checkout main
+            git pull origin main
+
+            cd ~/stock-exchange
+
+            echo "Building only market-events..."
+            DOCKER_BUILDKIT=1 docker compose build market-events
+
+            echo "Restarting only market-events without dependencies..."
+            docker compose up -d --no-deps market-events
+
+            echo "Deployment status:"
+            docker compose ps market-events
