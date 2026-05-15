@@ -44,6 +44,8 @@ market:
     event-topic: market.events       # we PUBLISH events here
     tick-topic: market.ticks         # we CONSUME ticks here
     tick-group: market-events-tick   # consumer group for the tick listener
+    price-topic: stock.prices        # we CONSUME price updates here (for auto-trigger)
+    price-group: market-events-price # consumer group for the price listener
 
   simulation:
 

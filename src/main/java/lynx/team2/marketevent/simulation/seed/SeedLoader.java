@@ -29,7 +29,7 @@ public class SeedLoader {
     @Value("${market.simulation.seed-file:classpath:seed.json}")
     private String seedFilePath;
 
-    private EventsSeed events = new EventsSeed(false, 0.0, Collections.emptyList(), Collections.emptyMap());
+    private volatile EventsSeed events = new EventsSeed(false, 0.0, Collections.emptyList(), Collections.emptyMap());
 
     @PostConstruct
     public void load() {
@@ -55,6 +55,14 @@ public class SeedLoader {
 
     public EventsSeed events() {
         return events;
+    }
+
+    public void setEvents(EventsSeed newEvents) {
+        this.events = newEvents;
+        log.info("Event config updated dynamically: {} definitions, {} headline groups, auto-trigger={}",
+                newEvents.getDefinitions() == null ? 0 : newEvents.getDefinitions().size(),
+                newEvents.getHeadlines() == null ? 0 : newEvents.getHeadlines().size(),
+                Boolean.TRUE.equals(newEvents.getAutoTriggerEnabled()));
     }
 
     private Resource resolve(String path) {
